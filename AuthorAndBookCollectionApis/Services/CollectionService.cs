@@ -8,10 +8,16 @@ namespace AuthorAndBookCollectionApis.Services
     {
         private readonly HttpClient _client;
         private readonly string baseUrl;
-        public CollectionService(HttpClient client)
+        private readonly IAuthorService _authorService;
+        private readonly IBookService _bookService;
+        private readonly IReviewService _reviewService;
+        public CollectionService(HttpClient client, IAuthorService authorService, IBookService bookService, IReviewService reviewService)
         {
             _client = client;
             baseUrl = "https://localhost:7037/api/authors/";
+            _authorService = authorService;
+            _bookService = bookService;
+            _reviewService = reviewService;
         }
 
         public async Task<List<Author>> GetAuthorsByIds(List<string> authorIds)
@@ -19,74 +25,27 @@ namespace AuthorAndBookCollectionApis.Services
             try
             {
                 var authors = new List<Author>();
-                var tasks = new List<Task>();
+                var getAuthorTasks = new List<Task<Author>>();
+                var getBookTasks = new List<Task>();
 
                 foreach (var authorId in authorIds)
                 {
                     var endPoint = new Uri(string.Concat(baseUrl, authorId));
-                    tasks.Add(GetAuthorById(authors, endPoint));
+                    getAuthorTasks.Add(_authorService.GetAuthorById(authorId));
                 }
-                await Task.WhenAll(tasks);
-                //tasks.Clear();
+                authors.AddRange(await Task.WhenAll(getAuthorTasks));
 
                 foreach (var author in authors)
                 {
                     var endPoint = new Uri(string.Concat(baseUrl, author.Id, "/books"));
-                    tasks.Add(GetBooksByAuthor(author, endPoint));
+                    getBookTasks.Add(_bookService.GetBooksByAuthor(author));
                 }
-                await Task.WhenAll(tasks);
+                await Task.WhenAll(getBookTasks);
                 return authors;
             }
             catch (Exception )
             {
                 return new List<Author>();
-            }
-        }
-
-        private async Task GetBooksByAuthor(Author author, Uri uri)
-        {
-            try
-            {
-                var response = await _client.GetAsync(uri);
-                author.Books = await response.Content.ReadFromJsonAsync<List<Book>>() ?? new List<Book>();
-                var tasks = new List<Task>();
-                foreach (var book in author.Books)
-                {
-                    var endPoint = string.Concat(baseUrl, author.Id, "/books/", book.Id, "/reviews");
-                    tasks.Add(GetReviewByBookId(book, endPoint));
-                }
-                await Task.WhenAll(tasks);
-            }
-            catch (Exception)
-            {
-                author.Books = new List<Book>();
-            }
-        }
-
-        private async Task GetReviewByBookId(Book book, string uri)
-        {
-            try
-            {
-                var response = await _client.GetAsync(uri);
-                book.Reviews = await response.Content.ReadFromJsonAsync<List<Review>>();
-            }
-            catch (Exception)
-            {
-                book.Reviews = new List<Review>();
-            }
-        }
-
-        private async Task GetAuthorById(List<Author> authors, Uri uri)
-        {
-            try
-            {
-                var response = await _client.GetAsync(uri);
-                authors.Add(response.Content.ReadFromJsonAsync<Author>().Result ?? new Author());
-                Thread.Sleep(20000);
-            }
-            catch (Exception)
-            {
-                authors.Add(new Author());
             }
         }
     }
