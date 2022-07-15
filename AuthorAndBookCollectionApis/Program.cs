@@ -10,8 +10,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICollectionService, CollectionService>();
 builder.Services.AddHttpClient<IAuthorService, AuthorService>();
-builder.Services.AddHttpClient<IBookService, BookService>();
-builder.Services.AddHttpClient<IReviewService, ReviewService>();
 
 var app = builder.Build();
 
