@@ -1,5 +1,6 @@
 ﻿using AuthorAndBookCollectionApis.Constants;
 using AuthorAndBookCollectionApis.Entities;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
@@ -17,34 +18,27 @@ namespace AuthorAndBookCollectionApis.Services
             _libraryCLients = authorService;
         }
 
-        public async Task<List<Author>> GetAuthorsByIds(List<string> authorIds)
+        public async Task<ActionResult<List<Author>>> GetAuthorsByIds(List<string> authorIds)
         {
-            try
+            var authors = new List<Author>();
+            var getAuthorTasks = new List<Task<Author>>();
+            var getBookTasks = new List<Task>();
+
+            foreach (var authorId in authorIds)
             {
-                var authors = new List<Author>();
-                var getAuthorTasks = new List<Task<Author>>();
-                var getBookTasks = new List<Task>();
-
-                foreach (var authorId in authorIds)
-                {
-                    getAuthorTasks.Add(_libraryCLients.GetAuthorById(authorId));
-                }
-                authors.AddRange(await Task.WhenAll(getAuthorTasks));
-
-                authors.RemoveAll(a => a is null);
-
-                foreach (var author in authors)
-                {
-                    getBookTasks.Add(Task.Run(async () => author.Books = await _libraryCLients.GetBooksByAuthor(author)));
-                }
-
-                await Task.WhenAll(getBookTasks);
-                return authors;
+                getAuthorTasks.Add(_libraryCLients.GetAuthorById(authorId));
             }
-            catch (Exception )
+            authors.AddRange(await Task.WhenAll(getAuthorTasks));
+
+            authors.RemoveAll(a => a is null);
+
+            foreach (var author in authors)
             {
-                return new List<Author>();
+                getBookTasks.Add(Task.Run(async () => author.Books = await _libraryCLients.GetBooksByAuthor(author)));
             }
+
+            await Task.WhenAll(getBookTasks);
+            return authors;
         }
     }
 
