@@ -24,7 +24,7 @@ namespace AuthorAndBookCollectionApis.UnitTest
         [Test]
         public async Task it_should_get_the_right_authors_for_ids()
         {
-            Mock<IAuthorService> authorServiceMock = new Mock<IAuthorService>();
+            Mock<ILibraryApiClients> authorServiceMock = new Mock<ILibraryApiClients>();
             authorServiceMock.Setup(x => x.GetAuthorById(It.IsAny<string>())).Returns(Task.FromResult(new Author()
             {
                 Id = "user1",
@@ -55,7 +55,6 @@ namespace AuthorAndBookCollectionApis.UnitTest
             }));
 
             var _service = new CollectionService(new HttpClient(), authorServiceMock.Object);
-
             var expectedResult = new List<Author>()
             {
                 new Author()
@@ -87,12 +86,9 @@ namespace AuthorAndBookCollectionApis.UnitTest
                     }
                 }
             };
+            var actualResult = await _service.GetAuthorsByIds(new List<string> { "user1" });
 
-            var trueResult = await _service.GetAuthorsByIds(new List<string> { "user1" });
-
-            Assert.AreEqual(expectedResult[0].Id, trueResult[0].Id);
-            Assert.AreEqual(expectedResult[0].Books[0].Id, trueResult[0].Books[0].Id);
-            Assert.AreEqual(expectedResult[0].Books[0].Reviews[0].Reviewer, trueResult[0].Books[0].Reviews[0].Reviewer);
+            Assert.AreEqual(JsonSerializer.Serialize(expectedResult), JsonSerializer.Serialize(actualResult));
         }
     }
 }

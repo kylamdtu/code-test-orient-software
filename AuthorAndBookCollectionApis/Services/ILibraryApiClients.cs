@@ -2,7 +2,7 @@
 
 namespace AuthorAndBookCollectionApis.Services
 {
-    public interface IAuthorService
+    public interface ILibraryApiClients
     {
         public Task<Author> GetAuthorById(string authorId);
         public Task<List<Book>> GetBooksByAuthor(Author author);

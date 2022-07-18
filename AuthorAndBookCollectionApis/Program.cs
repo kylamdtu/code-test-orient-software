@@ -1,6 +1,8 @@
 using AuthorAndBookCollectionApis.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Add services to the container.
 
@@ -9,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICollectionService, CollectionService>();
-builder.Services.AddHttpClient<IAuthorService, AuthorService>();
+builder.Services.AddHttpClient<ILibraryApiClients, LibraryApiClients>();
 
 var app = builder.Build();
 

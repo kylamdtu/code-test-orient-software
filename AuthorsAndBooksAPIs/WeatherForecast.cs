@@ -1,4 +1,4 @@
-namespace AuthorAndBookCollectionApis
+namespace AuthorsAndBooksAPIs
 {
     public class WeatherForecast
     {

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Ck2lY+0qJJa/szdRvQoXuXmChWSuD9RO5Vf7F8rCzwmX7BrVb7S7QqJTafSL9tRvBrdnp7hdu2ZivF5OqLrbjg==",
+  "dgSpecHash": "i4uiLVIA4EsEWZqdM4Y8oAgTZYGV6tE//xAS9a5UaTamOkU5g2T5VBdHtGjweqJEdC5E0suVtoAlJF4J2EjSOg==",
   "success": true,
   "projectFilePath": "C:\\Users\\lam.le\\source\\repos\\AuthorAndBookCollectionApis\\AuthorAndBookCollectionApis\\AuthorAndBookCollectionApis.csproj",
   "expectedPackageFiles": [
@@ -67,7 +67,8 @@
     "C:\\Users\\lam.le\\.nuget\\packages\\humanizer.core.zh-hans\\2.14.1\\humanizer.core.zh-hans.2.14.1.nupkg.sha512",
     "C:\\Users\\lam.le\\.nuget\\packages\\humanizer.core.zh-hant\\2.14.1\\humanizer.core.zh-hant.2.14.1.nupkg.sha512",
     "C:\\Users\\lam.le\\.nuget\\packages\\jmespath.net\\1.0.125\\jmespath.net.1.0.125.nupkg.sha512",
-    "C:\\Users\\lam.le\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.8\\microsoft.aspnet.webapi.client.5.2.8.nupkg.sha512",
+    "C:\\Users\\lam.le\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.9\\microsoft.aspnet.webapi.client.5.2.9.nupkg.sha512",
+    "C:\\Users\\lam.le\\.nuget\\packages\\microsoft.aspnet.webapi.core\\5.2.9\\microsoft.aspnet.webapi.core.5.2.9.nupkg.sha512",
     "C:\\Users\\lam.le\\.nuget\\packages\\microsoft.codecoverage\\17.2.0\\microsoft.codecoverage.17.2.0.nupkg.sha512",
     "C:\\Users\\lam.le\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\lam.le\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
@@ -150,6 +151,16 @@
     "C:\\Users\\lam.le\\.nuget\\packages\\xpath2.extensions\\1.1.3\\xpath2.extensions.1.1.3.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.AspNet.WebApi.Core 5.2.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.AspNet.WebApi.Core",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

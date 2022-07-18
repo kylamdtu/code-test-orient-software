@@ -9,12 +9,12 @@ namespace AuthorAndBookCollectionApis.Services
     {
         private readonly HttpClient _client;
         private readonly string baseUrl;
-        private readonly IAuthorService _authorService;
-        public CollectionService(HttpClient client, IAuthorService authorService)
+        private readonly ILibraryApiClients _libraryCLients;
+        public CollectionService(HttpClient client, ILibraryApiClients authorService)
         {
             _client = client;
             baseUrl = "https://localhost:7037/api/authors/";
-            _authorService = authorService;
+            _libraryCLients = authorService;
         }
 
         public async Task<List<Author>> GetAuthorsByIds(List<string> authorIds)
@@ -27,13 +27,15 @@ namespace AuthorAndBookCollectionApis.Services
 
                 foreach (var authorId in authorIds)
                 {
-                    getAuthorTasks.Add(_authorService.GetAuthorById(authorId));
+                    getAuthorTasks.Add(_libraryCLients.GetAuthorById(authorId));
                 }
                 authors.AddRange(await Task.WhenAll(getAuthorTasks));
 
+                authors.RemoveAll(a => a is null);
+
                 foreach (var author in authors)
                 {
-                    getBookTasks.Add(Task.Run(async () => author.Books = await _authorService.GetBooksByAuthor(author)));
+                    getBookTasks.Add(Task.Run(async () => author.Books = await _libraryCLients.GetBooksByAuthor(author)));
                 }
 
                 await Task.WhenAll(getBookTasks);
