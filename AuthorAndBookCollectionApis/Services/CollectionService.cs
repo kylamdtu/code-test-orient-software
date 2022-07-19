@@ -18,7 +18,7 @@ namespace AuthorAndBookCollectionApis.Services
             _libraryCLients = authorService;
         }
 
-        public async Task<ActionResult<List<Author>>> GetAuthorsByIds(List<string> authorIds)
+        public async Task<List<Author>> GetAuthorsByIds(List<string> authorIds)
         {
             var authors = new List<Author>();
             var getAuthorTasks = new List<Task<Author>>();
@@ -41,5 +41,4 @@ namespace AuthorAndBookCollectionApis.Services
             return authors;
         }
     }
-
 }
